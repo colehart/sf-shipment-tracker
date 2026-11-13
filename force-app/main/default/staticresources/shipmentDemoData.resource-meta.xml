@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Private</cacheControl>
+    <contentType>application/json</contentType>
+    <description>Demo freight network (sites, lanes, and route polylines) read by scripts/apex/seed-demo-data.apex and the static demo. Regenerate routes with npm run routes.</description>
+</StaticResource>

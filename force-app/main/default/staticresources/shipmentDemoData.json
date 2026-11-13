@@ -1,0 +1,354 @@
+{
+  "sites": [
+    {
+      "name": "Denver Distribution Center",
+      "city": "Denver",
+      "state": "CO",
+      "lat": 39.7392,
+      "lng": -104.9903
+    },
+    {
+      "name": "Chicago Cross-Dock",
+      "city": "Chicago",
+      "state": "IL",
+      "lat": 41.8781,
+      "lng": -87.6298
+    },
+    {
+      "name": "Dallas Fulfillment",
+      "city": "Dallas",
+      "state": "TX",
+      "lat": 32.7767,
+      "lng": -96.797
+    },
+    {
+      "name": "Atlanta Regional Hub",
+      "city": "Atlanta",
+      "state": "GA",
+      "lat": 33.749,
+      "lng": -84.388
+    },
+    {
+      "name": "Port of Long Beach Terminal",
+      "city": "Long Beach",
+      "state": "CA",
+      "lat": 33.7701,
+      "lng": -118.1937
+    },
+    {
+      "name": "Seattle Cold Storage",
+      "city": "Seattle",
+      "state": "WA",
+      "lat": 47.6062,
+      "lng": -122.3321
+    },
+    {
+      "name": "Memphis Air Gateway",
+      "city": "Memphis",
+      "state": "TN",
+      "lat": 35.1495,
+      "lng": -90.049
+    },
+    {
+      "name": "Newark Port Warehouse",
+      "city": "Newark",
+      "state": "NJ",
+      "lat": 40.7357,
+      "lng": -74.1724
+    },
+    {
+      "name": "Kansas City Rail Yard",
+      "city": "Kansas City",
+      "state": "MO",
+      "lat": 39.0997,
+      "lng": -94.5786
+    },
+    {
+      "name": "Phoenix Retail DC",
+      "city": "Phoenix",
+      "state": "AZ",
+      "lat": 33.4484,
+      "lng": -112.074
+    },
+    {
+      "name": "Minneapolis Grocery Co-op",
+      "city": "Minneapolis",
+      "state": "MN",
+      "lat": 44.9778,
+      "lng": -93.265
+    },
+    {
+      "name": "Salt Lake Parts Depot",
+      "city": "Salt Lake City",
+      "state": "UT",
+      "lat": 40.7608,
+      "lng": -111.891
+    }
+  ],
+  "lanes": [
+    {
+      "origin": 0,
+      "destination": 1,
+      "mode": "Truck",
+      "carrier": "Front Range Freight",
+      "status": "In Transit",
+      "progress": 0.55,
+      "promiseHours": 20,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 1,
+      "destination": 0,
+      "mode": "Truck",
+      "carrier": "Front Range Freight",
+      "status": "In Transit",
+      "progress": 0.3,
+      "promiseHours": 10,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 4,
+      "destination": 9,
+      "mode": "Truck",
+      "carrier": "Desert Line Carriers",
+      "status": "In Transit",
+      "progress": 0.7,
+      "promiseHours": 9,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 4,
+      "destination": 0,
+      "mode": "Rail",
+      "carrier": "Western Pacific Rail",
+      "status": "Delayed",
+      "progress": 0.4,
+      "promiseHours": 30,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 4,
+      "destination": 8,
+      "mode": "Rail",
+      "carrier": "Western Pacific Rail",
+      "status": "In Transit",
+      "progress": 0.25,
+      "promiseHours": 60,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 7,
+      "destination": 3,
+      "mode": "Truck",
+      "carrier": "Atlantic Coast Haulers",
+      "status": "In Transit",
+      "progress": 0.6,
+      "promiseHours": 7,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 7,
+      "destination": 1,
+      "mode": "Rail",
+      "carrier": "Great Lakes Rail",
+      "status": "In Transit",
+      "progress": 0.5,
+      "promiseHours": 40,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 6,
+      "destination": 5,
+      "mode": "Air",
+      "carrier": "Bluff City Air Cargo",
+      "status": "In Transit",
+      "progress": 0.45,
+      "promiseHours": 4,
+      "route": "kcpuEfurdPcnaAp_jBo~`Ar|jBqn`A~ykBi~_AxwlBum_A`vmBu|~@ptnBmk~@nsoBuy}@zrpBug}@lrqBiu|@prrBob|@zrsBko{@pstB{{z@ptuB{gz@zuvBssy@nwwB{~x@lyxBwix@r{yBgtw@~}zBi~v@v`|B_hv@rc}Bequ@tf~B_zt@`j_Ckbt@lm`Cijs@bqaC{qr@xtbC{xq@rxcCq_q@n|dCuep@n`fCoko@ldgCwpn@lhhCsum@jliC}yl@dpjC}}k@~skCmak@pwlCodj@`{mC_gi@j~nCeih@hapC{jg@bdqCclf@pfrC}le@rhsCimd@jjtCemc@pkuCulb@llvCwka@rlwCkj`@llxCsh_@nkyCmf^~izC{c]xg{C",
+      "routeSource": "great-circle"
+    },
+    {
+      "origin": 6,
+      "destination": 2,
+      "mode": "Air",
+      "carrier": "Bluff City Air Cargo",
+      "status": "Delivered",
+      "progress": 1,
+      "promiseHours": -6,
+      "route": "kcpuEfurdP|{Gre[~|Gpd[`~Grc[`_Hpb[d`Hpa[faHn`[hbHp_[hcHn~ZldHn}ZleHl|ZlfHn{ZngHlzZphHjyZriHlxZrjHjwZrkHjvZrlHhuZtmHhtZvnHhsZtoHfrZvpHfqZvqHfpZvrHdoZvsHdnZvtHbmZvuHdlZtvH`kZvwHbjZtxH~hZvyH`hZtzH~fZr{H~eZr|H|dZr}H|cZp~H|bZp_IzaZn`Ix`ZnaIz_ZjbIx~YlcIv}YhdIx|YfeIt{YffIvzYdgItyY`hItxY`iIrwY~iIrvYzjIruY",
+      "routeSource": "great-circle"
+    },
+    {
+      "origin": 2,
+      "destination": 3,
+      "mode": "Truck",
+      "carrier": "Lone Star Logistics",
+      "status": "In Transit",
+      "progress": 0.8,
+      "promiseHours": 6,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 2,
+      "destination": 9,
+      "mode": "Truck",
+      "carrier": "Lone Star Logistics",
+      "status": "Exception",
+      "progress": 0.35,
+      "promiseHours": 14,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 3,
+      "destination": 7,
+      "mode": "Truck",
+      "carrier": "Peach State Freight",
+      "status": "In Transit",
+      "progress": 0.2,
+      "promiseHours": 18,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 8,
+      "destination": 10,
+      "mode": "Truck",
+      "carrier": "Heartland Transport",
+      "status": "In Transit",
+      "progress": 0.65,
+      "promiseHours": 4,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 8,
+      "destination": 2,
+      "mode": "Rail",
+      "carrier": "Heartland Rail",
+      "status": "In Transit",
+      "progress": 0.15,
+      "promiseHours": 50,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 5,
+      "destination": 11,
+      "mode": "Truck",
+      "carrier": "Cascade Reefer Lines",
+      "status": "In Transit",
+      "progress": 0.5,
+      "promiseHours": 12,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 5,
+      "destination": 4,
+      "mode": "Ocean",
+      "carrier": "Pacific Coastal Shipping",
+      "status": "In Transit",
+      "progress": 0.3,
+      "promiseHours": 48,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 11,
+      "destination": 0,
+      "mode": "Truck",
+      "carrier": "Wasatch Express",
+      "status": "Delivered",
+      "progress": 1,
+      "promiseHours": -20,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 11,
+      "destination": 9,
+      "mode": "Truck",
+      "carrier": "Wasatch Express",
+      "status": "In Transit",
+      "progress": 0.4,
+      "promiseHours": 6,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 10,
+      "destination": 1,
+      "mode": "Truck",
+      "carrier": "North Star Freight",
+      "status": "Delayed",
+      "progress": 0.5,
+      "promiseHours": 5,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 9,
+      "destination": 2,
+      "mode": "Truck",
+      "carrier": "Desert Line Carriers",
+      "status": "In Transit",
+      "progress": 0.1,
+      "promiseHours": 26,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 0,
+      "destination": 11,
+      "mode": "Truck",
+      "carrier": "Front Range Freight",
+      "status": "Booked",
+      "progress": 0,
+      "promiseHours": 30,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 1,
+      "destination": 7,
+      "mode": "Truck",
+      "carrier": "Great Lakes Express",
+      "status": "Booked",
+      "progress": 0,
+      "promiseHours": 40,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 3,
+      "destination": 6,
+      "mode": "Truck",
+      "carrier": "Peach State Freight",
+      "status": "In Transit",
+      "progress": 0.75,
+      "promiseHours": 2,
+      "route": null,
+      "routeSource": null
+    },
+    {
+      "origin": 7,
+      "destination": 4,
+      "mode": "Air",
+      "carrier": "Coast to Coast Air",
+      "status": "In Transit",
+      "progress": 0.6,
+      "promiseHours": 3,
+      "route": "ceswFnxucMc}Els|DejDdy|DgwBl}|DcdAf`}D_Qna}D``@ha}DbsAp_}DffCh||DdyDtw|D`lFlq|Dx~Gxi|DlqIv`|DxcKbv{D`vLfj{D`hN||zDvyOfnzDfkQf~yDj|R|lyDdmTjzxDv}UrfxDxmWrqwDn}Xn{vDzlZhdvDv{[`luDfj]vrtDdx^lxsDte`@h}rDvra@farDf_c@hdqDfkd@tfpDvve@hhoDrag@dinD~kh@limDxui@bilD~~j@hhkDtgl@|fjDxom@beiDdwn@|bhDb~o@j`gDjdq@p}eD`jr@jzdDbos@~vcDpst@lsbDjwu@xoaDrzv@|k`Df}w@bh_Dd_y@dd~Cr`z@f`}C",
+      "routeSource": "great-circle"
+    }
+  ]
+}

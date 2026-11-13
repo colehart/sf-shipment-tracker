@@ -239,4 +239,53 @@ private class ShipmentEtaServiceTest {
       [SELECT Estimated_Arrival__c FROM Shipment__c WHERE Id = :s.Id].Estimated_Arrival__c
     );
   }
+
+  @IsTest
+  static void routeDistanceReplacesStraightLine() {
+    // A dog-leg via Dallas is much longer than Denver to Chicago direct.
+    List<Location> route = new List<Location>{
+      denver(),
+      Location.newInstance(32.7767, -96.7970),
+      chicago()
+    };
+    ShipmentEtaService.Estimate direct = ShipmentEtaService.estimate(
+      'Truck',
+      denver(),
+      chicago(),
+      T0,
+      T0.addDays(2),
+      'In Transit'
+    );
+    ShipmentEtaService.Estimate routed = ShipmentEtaService.estimate(
+      'Truck',
+      denver(),
+      chicago(),
+      T0,
+      T0.addDays(2),
+      'In Transit',
+      route
+    );
+    Assert.isTrue(
+      routed.remainingKm > direct.remainingKm + 500,
+      'Route via Dallas should add distance'
+    );
+    Assert.isTrue(routed.estimatedArrival > direct.estimatedArrival);
+  }
+
+  @IsTest
+  static void triggerUsesRouteField() {
+    ShipmentEtaService.nowOverride = T0;
+    List<Account> sites = ShipmentTestData.denverAndChicago();
+    Shipment__c direct = ShipmentTestData.shipment(sites[0], sites[1], null);
+    Shipment__c routed = ShipmentTestData.shipment(sites[0], sites[1], null);
+    // Denver -> Dallas -> Chicago, encoded at precision 5.
+    routed.Route__c = ShipmentTestData.VIA_DALLAS_POLYLINE;
+    insert new List<Shipment__c>{ direct, routed };
+    Map<Id, Shipment__c> saved = new Map<Id, Shipment__c>(
+      [SELECT Remaining_Km__c FROM Shipment__c]
+    );
+    Assert.isTrue(
+      saved.get(routed.Id).Remaining_Km__c > saved.get(direct.Id).Remaining_Km__c + 500
+    );
+  }
 }

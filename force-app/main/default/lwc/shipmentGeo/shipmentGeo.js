@@ -1,3 +1,5 @@
+import { decodePolyline, splitAt } from 'c/routeGeometry';
+
 /**
  * Pure helpers that turn ShipmentMapController data into GeoJSON and list rows.
  * No DOM or MapLibre access lives here, so all of it is unit tested in Jest.
@@ -73,11 +75,17 @@ export function shipmentFeatures(shipments = [], selectedId = null) {
 
 /**
  * Two line features per shipment: the leg already travelled (origin to current
- * position) and the leg remaining (current position to destination).
+ * position) and the leg remaining (current position to destination). When the
+ * shipment has a planned route, both legs follow it; otherwise they are straight.
  */
 export function routeFeatures(shipments = [], sites = []) {
   const siteById = new Map(sites.filter(hasCoords).map((s) => [s.id, s]));
   const features = [];
+  const line = (id, leg, color, coordinates) => ({
+    type: 'Feature',
+    geometry: { type: 'LineString', coordinates },
+    properties: { id, leg, color }
+  });
   for (const s of shipments) {
     const origin = siteById.get(s.originId);
     const destination = siteById.get(s.destinationId);
@@ -85,22 +93,20 @@ export function routeFeatures(shipments = [], sites = []) {
       continue;
     }
     const here = [s.longitude, s.latitude];
-    const risk = riskOf(s);
-    if (origin) {
-      features.push({
-        type: 'Feature',
-        geometry: { type: 'LineString', coordinates: [[origin.longitude, origin.latitude], here] },
-        properties: { id: s.id, leg: 'travelled', color: RISK_COLORS[risk] }
-      });
+    const color = RISK_COLORS[riskOf(s)];
+    const path = decodePolyline(s.route);
+    if (path.length >= 2) {
+      const { travelled, remaining } = splitAt(path, here);
+      features.push(line(s.id, 'travelled', color, travelled));
+      features.push(line(s.id, 'remaining', color, remaining));
+      continue;
     }
-    features.push({
-      type: 'Feature',
-      geometry: {
-        type: 'LineString',
-        coordinates: [here, [destination.longitude, destination.latitude]]
-      },
-      properties: { id: s.id, leg: 'remaining', color: RISK_COLORS[risk] }
-    });
+    if (origin) {
+      features.push(line(s.id, 'travelled', color, [[origin.longitude, origin.latitude], here]));
+    }
+    features.push(
+      line(s.id, 'remaining', color, [here, [destination.longitude, destination.latitude]])
+    );
   }
   return featureCollection(features);
 }

@@ -57,6 +57,22 @@ public with sharing class ShipmentEtaService {
     Datetime promised,
     String status
   ) {
+    return estimate(mode, position, destination, asOf, promised, status, null);
+  }
+
+  /**
+   * Same as above, but measures the distance left along a planned route
+   * (decoded Route__c) instead of a straight line when one is given.
+   */
+  public static Estimate estimate(
+    String mode,
+    Location position,
+    Location destination,
+    Datetime asOf,
+    Datetime promised,
+    String status,
+    List<Location> route
+  ) {
     if (position == null || destination == null || asOf == null) {
       return null;
     }
@@ -66,7 +82,10 @@ public with sharing class ShipmentEtaService {
       return result;
     }
 
-    Decimal km = Decimal.valueOf(Location.getDistance(position, destination, 'km'));
+    Decimal km = RouteGeometry.remainingKm(route, position);
+    if (km == null) {
+      km = Decimal.valueOf(Location.getDistance(position, destination, 'km'));
+    }
     result.remainingKm = km.setScale(1);
 
     Decimal speed = AVG_SPEED_KPH.containsKey(mode) ? AVG_SPEED_KPH.get(mode) : DEFAULT_SPEED_KPH;
@@ -120,7 +139,8 @@ public with sharing class ShipmentEtaService {
         geocodes.get(s.Destination__c),
         asOf,
         s.Promised_Delivery__c,
-        s.Status__c
+        s.Status__c,
+        RouteGeometry.decode(s.Route__c)
       );
       s.Remaining_Km__c = e?.remainingKm;
       s.Estimated_Arrival__c = e?.estimatedArrival;

@@ -59,6 +59,9 @@ public with sharing class ShipmentMapController {
     public Decimal latitude;
     @AuraEnabled
     public Decimal longitude;
+    /** Planned path as an encoded polyline, or null for a straight line. */
+    @AuraEnabled
+    public String route;
   }
 
   public class MapData {
@@ -122,7 +125,8 @@ public with sharing class ShipmentMapController {
           Destination__c,
           Destination__r.Name,
           Current_Location__Latitude__s,
-          Current_Location__Longitude__s
+          Current_Location__Longitude__s,
+          Route__c
         FROM Shipment__c
         WITH USER_MODE
         ORDER BY Promised_Delivery__c ASC NULLS LAST
@@ -148,7 +152,8 @@ public with sharing class ShipmentMapController {
         Destination__c,
         Destination__r.Name,
         Current_Location__Latitude__s,
-        Current_Location__Longitude__s
+        Current_Location__Longitude__s,
+        Route__c
       FROM Shipment__c
       WHERE Origin__c = :accountId OR Destination__c = :accountId
       WITH USER_MODE
@@ -193,6 +198,7 @@ public with sharing class ShipmentMapController {
     dto.estimatedArrival = s.Estimated_Arrival__c;
     dto.promisedDelivery = s.Promised_Delivery__c;
     dto.lastPingAt = s.Last_Ping_At__c;
+    dto.route = s.Route__c;
     dto.originId = s.Origin__c;
     dto.originName = s.Origin__r?.Name;
     dto.destinationId = s.Destination__c;

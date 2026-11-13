@@ -13,6 +13,7 @@ import {
   sortForTriage,
   summarize
 } from 'c/shipmentGeo';
+import { encodePolyline } from 'c/routeGeometry';
 
 const { sites, shipments } = require('../../shipmentMap/__tests__/data/mapData.json');
 
@@ -48,6 +49,27 @@ describe('c-shipment-geo', () => {
       [-87.6298, 41.8781]
     ]);
     expect(fc.features.some((f) => f.properties.id === 'a00000000000004AAA')).toBe(false);
+  });
+
+  it('follows a planned route and splits it at the current position', () => {
+    const route = encodePolyline([
+      [-104.9903, 39.7392],
+      [-96.797, 32.7767],
+      [-87.6298, 41.8781]
+    ]);
+    const routed = { ...shipments[0], route, latitude: 33, longitude: -97 };
+    const fc = routeFeatures([routed], sites);
+    const [travelled, remaining] = fc.features;
+    expect(travelled.properties.leg).toBe('travelled');
+    expect(travelled.geometry.coordinates).toEqual([
+      [-104.9903, 39.7392],
+      [-96.797, 32.7767],
+      [-97, 33]
+    ]);
+    expect(remaining.geometry.coordinates).toEqual([
+      [-97, 33],
+      [-87.6298, 41.8781]
+    ]);
   });
 
   it('skips routes to unmapped destinations and travelled legs from unmapped origins', () => {

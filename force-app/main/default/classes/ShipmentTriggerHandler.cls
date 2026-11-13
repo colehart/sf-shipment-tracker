@@ -36,6 +36,7 @@ public with sharing class ShipmentTriggerHandler {
     'Shipped_At__c',
     'Promised_Delivery__c',
     'Last_Ping_At__c',
+    'Route__c',
     'Current_Location__Latitude__s',
     'Current_Location__Longitude__s'
   };

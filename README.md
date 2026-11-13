@@ -33,6 +33,9 @@ It deploys to Vercel as is: `vercel.json` runs `npm run build:demo` and serves `
   average speed, and a risk score: **Late** (ETA after the promise), **At Risk** (less than 4 hours
   of slack, or the shipment is Delayed or has an Exception), or **On Time**. The side panel lists
   late freight first, and the chips filter both the list and the map.
+- **Real routes.** Truck lanes follow the road path from [OSRM](https://project-osrm.org/) and air
+  lanes follow a great-circle arc. Distance, ETA, and the simulator all measure along the route.
+  Rail and ocean lanes stay straight, because there is no free routing source for them.
 - **Live updates.** The component subscribes to Change Data Capture events for `Shipment__c`, so
   when a ping lands (from an integration, a user, or the included simulator), every open map
   refreshes without a page reload.
@@ -74,6 +77,8 @@ flowchart LR
 | ETA and risk | `classes/ShipmentEtaService.cls` | `estimate()` is a pure function; `apply()` is the bulk-safe trigger entry point with one query per batch |
 | Trigger | `triggers/ShipmentTrigger.trigger` | Thin trigger, logic in `ShipmentTriggerHandler`, recalculates only when an input field changed |
 | API | `classes/ShipmentMapController.cls` | `@AuraEnabled(cacheable=true)`, all SOQL `WITH USER_MODE` so sharing and field security apply |
+| Routes | `classes/RouteGeometry.cls`, `lwc/routeGeometry` | Encoded-polyline decoding, distance remaining along a route, and point-at-fraction, in matching Apex and JS |
+| Demo network | `staticresources/shipmentDemoData.json` | Sites, lanes, and route polylines. The seed script and the static demo both read it, and `npm run routes` refreshes the routes |
 | Demo pings | `classes/ShipmentPingSimulator.cls` | Moves in-transit freight toward its destination; runs from Anonymous Apex or on a schedule |
 | Map component | `lwc/shipmentMap` | Loads MapLibre, renders GeoJSON layers, triage panel, CDC subscription, fallback |
 | Geo helpers | `lwc/shipmentGeo` | GeoJSON, bounds, sorting, and slack math with no DOM access, fully unit tested |
@@ -81,6 +86,10 @@ flowchart LR
 
 ### Design decisions
 
+- **Routes are data, not a runtime dependency.** `Route__c` holds an encoded polyline, which is
+  the format most routing APIs return. In production an integration would fill it in when a
+  load is planned. The map and the ETA math never call a routing service themselves, so there
+  are no callouts in the trigger and no API keys.
 - **MapLibre's CSP build.** The default MapLibre bundle starts its web worker from a Blob URL.
   Lightning's Content Security Policy is strict about that, so the static resource ships the
   `maplibre-gl-csp` build and the component points it at the worker file with `setWorkerUrl()`.
@@ -92,6 +101,15 @@ flowchart LR
   coalesces them into one `refreshApex` call.
 - **No API keys.** The basemap is [OpenFreeMap](https://openfreemap.org/) (OpenStreetMap data),
   so anyone can deploy this to a free org without signing up for a tile provider.
+
+## Refresh the demo routes
+
+```bash
+npm run routes      # road routes for truck lanes from the public OSRM server, arcs for air
+```
+
+This updates `force-app/main/default/staticresources/shipmentDemoData.json`. Commit the file,
+then redeploy and re-run the seed script so the org picks up the new routes.
 
 ## Run it in a free Developer Edition org
 
@@ -120,8 +138,8 @@ npm run ci          # ESLint, Prettier, and Jest with coverage thresholds
 sf apex run test --test-level RunLocalTests --code-coverage --result-format human --target-org tracker
 ```
 
-- **Jest:** 30 tests for the component and the geo helpers, with MapLibre, Apex, and empApi mocked.
-- **Apex:** tests for the ETA math, bulk trigger behavior (200 records), user-mode access
+- **Jest:** 38 tests for the component, the geo helpers, and the route math, with MapLibre, Apex, and empApi mocked.
+- **Apex:** tests for polyline decoding and distance along a route, the ETA math (straight and routed), bulk trigger behavior (200 records), user-mode access
   including a user without the permission set, Account-page filtering, and the simulator.
 - **CI:** GitHub Actions runs lint, format, and Jest on every push. If an `SFDX_AUTH_URL` secret is
   set, it also validates the deploy against an org and runs all Apex tests.
@@ -131,7 +149,7 @@ sf apex run test --test-level RunLocalTests --code-coverage --result-format huma
 - Learn average speed per lane and carrier from delivered shipments instead of fixed mode speeds.
 - A Platform Event for carrier pings, so integrations publish events instead of updating records.
 - Alerting: a Flow that notifies the account owner when a shipment flips to Late.
-- Clustering for orgs with thousands of shipments, and road-following routes instead of straight lines.
+- Clustering for orgs with thousands of shipments, and rail and ocean routing from a commercial source.
 
 ## License
 

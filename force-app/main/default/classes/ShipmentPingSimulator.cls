@@ -23,7 +23,8 @@ public with sharing class ShipmentPingSimulator implements Schedulable {
         Destination__c,
         Last_Ping_At__c,
         Current_Location__Latitude__s,
-        Current_Location__Longitude__s
+        Current_Location__Longitude__s,
+        Route__c
       FROM Shipment__c
       WHERE Status__c IN ('In Transit', 'Delayed')
       WITH USER_MODE
@@ -51,18 +52,29 @@ public with sharing class ShipmentPingSimulator implements Schedulable {
       if (s.Status__c == 'Delayed') {
         speed = speed / 4;
       }
-      Decimal remaining = Decimal.valueOf(Location.getDistance(here, there, 'km'));
-      Decimal fraction = remaining == 0 ? 1 : speed * hours / remaining;
-      if (fraction > 1) {
-        fraction = 1;
+      Decimal travelKm = speed * hours;
+      List<Location> route = RouteGeometry.decode(s.Route__c);
+      Location next;
+      Boolean arrived;
+      if (route.size() >= 2) {
+        // Follow the planned road (or air) path.
+        next = RouteGeometry.advance(route, here, travelKm);
+        arrived = RouteGeometry.remainingKm(route, next) < 0.5;
+      } else {
+        Decimal remaining = Decimal.valueOf(Location.getDistance(here, there, 'km'));
+        Decimal fraction = 1;
+        if (remaining > 0 && travelKm < remaining) {
+          fraction = travelKm / remaining;
+        }
+        next = interpolate(here, there, fraction);
+        arrived = fraction >= 1;
       }
-      Location next = interpolate(here, there, fraction);
 
       Shipment__c u = new Shipment__c(Id = s.Id);
       u.Current_Location__Latitude__s = next.getLatitude();
       u.Current_Location__Longitude__s = next.getLongitude();
       u.Last_Ping_At__c = ShipmentEtaService.now();
-      if (fraction >= 1) {
+      if (arrived) {
         u.Status__c = 'Delivered';
       }
       updates.add(u);

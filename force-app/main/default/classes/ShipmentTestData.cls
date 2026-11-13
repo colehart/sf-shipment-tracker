@@ -7,6 +7,9 @@ public class ShipmentTestData {
   public static final Decimal CHICAGO_LAT = 41.8781;
   public static final Decimal CHICAGO_LNG = -87.6298;
 
+  /** Denver -> Dallas -> Chicago as a precision-5 encoded polyline. */
+  public static final String VIA_DALLAS_POLYLINE = '_qpqFj|x_Srzni@cg_q@wrpv@_n}v@';
+
   public static Account site(String name, Decimal lat, Decimal lng) {
     return new Account(
       Name = name,

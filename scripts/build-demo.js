@@ -13,9 +13,17 @@ fs.mkdirSync(path.join(out, 'vendor'), { recursive: true });
 for (const file of ['index.html', 'styles.css', 'app.js', 'data.js', 'eta.js']) {
   fs.copyFileSync(path.join(root, 'demo', file), path.join(out, file));
 }
+// The component's own modules, with LWC's c/ imports rewritten to relative paths.
+for (const mod of ['shipmentGeo', 'routeGeometry']) {
+  const src = fs.readFileSync(
+    path.join(root, `force-app/main/default/lwc/${mod}/${mod}.js`),
+    'utf8'
+  );
+  fs.writeFileSync(path.join(out, `${mod}.js`), src.replace(/from 'c\/(\w+)'/g, "from './$1.js'"));
+}
 fs.copyFileSync(
-  path.join(root, 'force-app/main/default/lwc/shipmentGeo/shipmentGeo.js'),
-  path.join(out, 'shipmentGeo.js')
+  path.join(root, 'force-app/main/default/staticresources/shipmentDemoData.json'),
+  path.join(out, 'shipmentDemoData.json')
 );
 const maplibre = path.join(root, 'node_modules/maplibre-gl/dist');
 fs.copyFileSync(path.join(maplibre, 'maplibre-gl.js'), path.join(out, 'vendor/maplibre-gl.js'));

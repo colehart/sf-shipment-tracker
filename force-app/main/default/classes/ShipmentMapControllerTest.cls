@@ -15,6 +15,7 @@ private class ShipmentMapControllerTest {
     toChicago.Current_Location__Latitude__s = 41.2565;
     toChicago.Current_Location__Longitude__s = -95.9345;
     toChicago.Last_Ping_At__c = Datetime.now();
+    toChicago.Route__c = ShipmentTestData.VIA_DALLAS_POLYLINE;
     Shipment__c toDallas = ShipmentTestData.shipment(sites[1], dallas, Datetime.now().addDays(3));
     insert new List<Shipment__c>{ toChicago, toDallas };
   }
@@ -34,6 +35,13 @@ private class ShipmentMapControllerTest {
       Assert.isNotNull(s.originName);
       Assert.isNotNull(s.estimatedArrival);
     }
+    Integer withRoute = 0;
+    for (ShipmentMapController.Shipment s : data.shipments) {
+      if (s.route != null) {
+        withRoute++;
+      }
+    }
+    Assert.areEqual(1, withRoute, 'The routed shipment should carry its polyline to the map');
   }
 
   @IsTest

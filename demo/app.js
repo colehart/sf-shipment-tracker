@@ -19,7 +19,7 @@ import {
   sortForTriage,
   summarize
 } from './shipmentGeo.js';
-import { buildNetwork, advance } from './data.js';
+import { buildNetwork, advance, loadNetworkData } from './data.js';
 
 const BASEMAP_STYLE = 'https://tiles.openfreemap.org/styles/positron';
 const FALLBACK_STYLE = {
@@ -32,6 +32,7 @@ const PLAY_INTERVAL_MS = 1000;
 
 const state = {
   clock: Date.now(),
+  data: null,
   network: null,
   riskFilter: null,
   selectedId: null,
@@ -62,7 +63,8 @@ function toDto(s) {
     ...s,
     estimatedArrival: iso(s.estimatedArrival),
     promisedDelivery: iso(s.promisedDelivery),
-    lastPingAt: iso(s.lastPingAt)
+    lastPingAt: iso(s.lastPingAt),
+    path: undefined
   };
 }
 
@@ -154,7 +156,7 @@ function addLayers() {
 
 let fitted = false;
 function syncMap() {
-  if (!layersReady || !map.getSource('shipments')) {
+  if (!state.network || !layersReady || !map.getSource('shipments')) {
     return;
   }
   const visible = filterByRisk(shipments(), state.riskFilter);
@@ -327,11 +329,20 @@ els.step.addEventListener('click', () => tick(3));
 els.reset.addEventListener('click', () => {
   setPlaying(false);
   state.clock = Date.now();
-  state.network = buildNetwork(state.clock);
+  state.network = buildNetwork(state.data, state.clock);
   state.selectedId = null;
   popup?.remove();
   render();
 });
 
-state.network = buildNetwork(state.clock);
-render();
+loadNetworkData()
+  .then((data) => {
+    state.data = data;
+    state.network = buildNetwork(data, state.clock);
+    render();
+  })
+  .catch((error) => {
+    console.error(error);
+    els.note.hidden = false;
+    els.note.textContent = 'The demo data could not be loaded. Try refreshing the page.';
+  });

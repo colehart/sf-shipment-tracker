@@ -43,6 +43,26 @@ private class ShipmentPingSimulatorTest {
   }
 
   @IsTest
+  static void followsRouteWhenOneIsSet() {
+    List<Account> sites = ShipmentTestData.denverAndChicago();
+    Shipment__c s = ShipmentTestData.shipment(sites[0], sites[1], null);
+    s.Route__c = ShipmentTestData.VIA_DALLAS_POLYLINE;
+    insert s;
+    User u = ShipmentTestData.trackerUser();
+    Test.startTest();
+    System.runAs(u) {
+      // 10 hours at 65 km/h = 650 km south-east toward Dallas, not east toward Chicago.
+      ShipmentPingSimulator.advance(10);
+    }
+    Test.stopTest();
+    Shipment__c after = [SELECT Current_Location__Latitude__s FROM Shipment__c WHERE Id = :s.Id];
+    Assert.isTrue(
+      after.Current_Location__Latitude__s < ShipmentTestData.DENVER_LAT - 2,
+      'Should have moved south along the route, got ' + after.Current_Location__Latitude__s
+    );
+  }
+
+  @IsTest
   static void interpolateHitsEndpoints() {
     Location a = Location.newInstance(0, 0);
     Location b = Location.newInstance(10, 20);
