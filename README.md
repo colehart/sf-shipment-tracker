@@ -7,6 +7,8 @@ report new positions.
 
 ![CI](https://github.com/colehart/sf-shipment-tracker/actions/workflows/ci.yml/badge.svg)
 
+**[Live demo](https://sf-shipment-tracker-ujls.vercel.app/)**: the map and triage panel running outside Salesforce, with simulated carrier pings.
+
 <!-- Screenshot goes here once the org is set up: docs/screenshot.png -->
 
 ## Try the demo without Salesforce
