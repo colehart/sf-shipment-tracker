@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shipment Tracker Demo</title>
+    <meta
+      name="description"
+      content="Live freight map with late-risk triage. A static demo of a Salesforce Lightning Web Component built with MapLibre GL JS."
+    />
+    <link rel="stylesheet" href="vendor/maplibre-gl.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="banner">
+      <div>
+        <strong>Shipment Tracker</strong>
+        <span class="banner-sub"
+          >Static demo of a Salesforce Lightning Web Component. In an org, the data comes from Apex
+          and updates arrive through Change Data Capture.</span
+        >
+      </div>
+      <a class="banner-link" href="https://github.com/colehart/sf-shipment-tracker"
+        >View the source on GitHub</a
+      >
+    </header>
+
+    <main class="card">
+      <div class="card-header">
+        <h1 class="card-title">
+          <span class="card-icon" aria-hidden="true"></span>Shipment Tracker
+        </h1>
+        <div class="controls">
+          <span class="clock" id="clock" aria-live="polite"></span>
+          <button type="button" id="play" class="btn btn-brand" aria-pressed="false">
+            Play pings
+          </button>
+          <button type="button" id="step" class="btn">+3 hours</button>
+          <button type="button" id="reset" class="btn">Reset</button>
+        </div>
+      </div>
+
+      <div class="layout">
+        <div class="map-pane">
+          <div id="map" role="region" aria-label="Map of shipments and sites"></div>
+          <p id="map-note" class="map-note" hidden></p>
+        </div>
+
+        <aside class="side-pane">
+          <div class="risk-chips" id="chips" role="group" aria-label="Filter by late risk"></div>
+          <ul
+            class="shipment-list"
+            id="list"
+            role="listbox"
+            aria-label="Shipments, most urgent first"
+          ></ul>
+        </aside>
+      </div>
+
+      <div class="legend">
+        <span><span class="legend-site"></span>Site (Account)</span>
+        <span><span class="legend-line legend-line_solid"></span>Travelled</span>
+        <span><span class="legend-line legend-line_dashed"></span>Remaining</span>
+      </div>
+    </main>
+
+    <script src="vendor/maplibre-gl.js"></script>
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

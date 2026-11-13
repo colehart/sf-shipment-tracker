@@ -9,6 +9,19 @@ report new positions.
 
 <!-- Screenshot goes here once the org is set up: docs/screenshot.png -->
 
+## Try the demo without Salesforce
+
+`demo/` is a static page that runs the same map outside Salesforce. It uses the component's own
+`shipmentGeo` module, a browser port of the Apex ETA math, and the same demo freight network.
+**Play pings** moves the trucks the way `ShipmentPingSimulator` does in the org.
+
+```bash
+npm install
+npm run demo        # builds demo-dist/ and serves it locally
+```
+
+It deploys to Vercel as is: `vercel.json` runs `npm run build:demo` and serves `demo-dist/`.
+
 ## What it does
 
 - **Map of the network.** Every geocoded Account is a site. Every Shipment is a pin at its last
@@ -105,7 +118,7 @@ npm run ci          # ESLint, Prettier, and Jest with coverage thresholds
 sf apex run test --test-level RunLocalTests --code-coverage --result-format human --target-org tracker
 ```
 
-- **Jest:** 29 tests for the component and the geo helpers, with MapLibre, Apex, and empApi mocked.
+- **Jest:** 30 tests for the component and the geo helpers, with MapLibre, Apex, and empApi mocked.
 - **Apex:** tests for the ETA math, bulk trigger behavior (200 records), user-mode access
   including a user without the permission set, Account-page filtering, and the simulator.
 - **CI:** GitHub Actions runs lint, format, and Jest on every push. If an `SFDX_AUTH_URL` secret is

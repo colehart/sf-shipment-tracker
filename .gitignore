@@ -6,3 +6,5 @@ coverage/
 .vscode/
 .DS_Store
 *.log
+demo-dist/
+.vercel

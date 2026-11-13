@@ -15,7 +15,7 @@ import {
   routeFeatures,
   shipmentFeatures,
   siteFeatures,
-  slackHours,
+  slackLabel,
   sortForTriage,
   summarize
 } from 'c/shipmentGeo';
@@ -400,11 +400,6 @@ export default class ShipmentMap extends NavigationMixin(LightningElement) {
     });
     return sortForTriage(filterByRisk(this.data.shipments, this.riskFilter)).map((s) => {
       const risk = riskOf(s);
-      const slack = slackHours(s);
-      let slackLabel = '';
-      if (slack !== null && s.status !== 'Delivered') {
-        slackLabel = slack >= 0 ? `${slack}h ahead of promise` : `${Math.abs(slack)}h past promise`;
-      }
       return {
         ...s,
         risk,
@@ -412,7 +407,7 @@ export default class ShipmentMap extends NavigationMixin(LightningElement) {
         etaLabel: s.estimatedArrival
           ? `ETA ${dateFormat.format(new Date(s.estimatedArrival))}`
           : 'No ETA',
-        slackLabel,
+        slackLabel: slackLabel(s),
         meta: [s.mode, s.carrier, s.status].filter(Boolean).join(' · '),
         dotStyle: `background:${RISK_COLORS[risk]}`,
         className: `shipment-row${s.id === this.selectedId ? ' shipment-row_selected' : ''}`,

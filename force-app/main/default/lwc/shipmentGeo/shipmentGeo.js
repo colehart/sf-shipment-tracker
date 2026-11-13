@@ -161,6 +161,17 @@ export function slackHours(shipment) {
   return Math.round(ms / 3600000);
 }
 
+/** Plain-language slack for the list, e.g. "3h ahead of promise". Empty when not applicable. */
+export function slackLabel(shipment) {
+  if (shipment.status === 'Delivered' || !shipment.estimatedArrival || !shipment.promisedDelivery) {
+    return '';
+  }
+  const ms = Date.parse(shipment.promisedDelivery) - Date.parse(shipment.estimatedArrival);
+  const hours = Math.floor(Math.abs(ms) / 3600000);
+  const amount = hours < 1 ? 'Under 1h' : `${hours}h`;
+  return ms >= 0 ? `${amount} ahead of promise` : `${amount} past promise`;
+}
+
 /** Markers for the built-in lightning-map, used when MapLibre cannot start. */
 export function fallbackMarkers(sites = [], shipments = []) {
   const siteMarkers = sites.filter(hasCoords).map((s) => ({

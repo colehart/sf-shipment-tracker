@@ -9,6 +9,7 @@ import {
   shipmentFeatures,
   siteFeatures,
   slackHours,
+  slackLabel,
   sortForTriage,
   summarize
 } from 'c/shipmentGeo';
@@ -95,6 +96,18 @@ describe('c-shipment-geo', () => {
     expect(slackHours(shipments[0])).toBe(28);
     expect(slackHours(shipments[1])).toBe(-8);
     expect(slackHours(shipments[3])).toBeNull();
+  });
+
+  it('labels slack in plain language', () => {
+    expect(slackLabel(shipments[0])).toBe('28h ahead of promise');
+    expect(slackLabel(shipments[1])).toBe('8h past promise');
+    expect(slackLabel(shipments[3])).toBe('');
+    expect(
+      slackLabel({
+        estimatedArrival: '2026-03-02T12:20:00Z',
+        promisedDelivery: '2026-03-02T12:00:00Z'
+      })
+    ).toBe('Under 1h past promise');
   });
 
   it('builds lightning-map markers for the fallback view', () => {
