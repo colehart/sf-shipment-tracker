@@ -1,0 +1,2 @@
+# Keep the vendored MapLibre build out of GitHub's language stats
+force-app/main/default/staticresources/maplibregl/** linguist-vendored

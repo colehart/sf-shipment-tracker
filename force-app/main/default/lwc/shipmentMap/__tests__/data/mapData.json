@@ -1,0 +1,33 @@
+{
+  "sites": [
+    { "id": "001000000000001AAA", "name": "Denver DC", "city": "Denver", "state": "CO", "latitude": 39.7392, "longitude": -104.9903 },
+    { "id": "001000000000002AAA", "name": "Chicago Hub", "city": "Chicago", "state": "IL", "latitude": 41.8781, "longitude": -87.6298 },
+    { "id": "001000000000003AAA", "name": "Dallas Yard", "city": "Dallas", "state": "TX", "latitude": 32.7767, "longitude": -96.797 }
+  ],
+  "shipments": [
+    {
+      "id": "a00000000000001AAA", "name": "SHP-00001", "status": "In Transit", "mode": "Truck", "carrier": "Front Range Freight",
+      "lateRisk": "On Time", "remainingKm": 700, "estimatedArrival": "2026-03-03T08:00:00.000Z", "promisedDelivery": "2026-03-04T12:00:00.000Z",
+      "originId": "001000000000001AAA", "originName": "Denver DC", "destinationId": "001000000000002AAA", "destinationName": "Chicago Hub",
+      "latitude": 41.2565, "longitude": -95.9345
+    },
+    {
+      "id": "a00000000000002AAA", "name": "SHP-00002", "status": "Delayed", "mode": "Rail", "carrier": "Prairie Rail",
+      "lateRisk": "Late", "remainingKm": 1300, "estimatedArrival": "2026-03-05T20:00:00.000Z", "promisedDelivery": "2026-03-05T12:00:00.000Z",
+      "originId": "001000000000002AAA", "originName": "Chicago Hub", "destinationId": "001000000000003AAA", "destinationName": "Dallas Yard",
+      "latitude": 41.8781, "longitude": -87.6298
+    },
+    {
+      "id": "a00000000000003AAA", "name": "SHP-00003", "status": "In Transit", "mode": "Truck", "carrier": "Lone Star Logistics",
+      "lateRisk": "At Risk", "remainingKm": 200, "estimatedArrival": "2026-03-02T15:00:00.000Z", "promisedDelivery": "2026-03-02T17:00:00.000Z",
+      "originId": "001000000000003AAA", "originName": "Dallas Yard", "destinationId": "001000000000001AAA", "destinationName": "Denver DC",
+      "latitude": 38.0, "longitude": -103.0
+    },
+    {
+      "id": "a00000000000004AAA", "name": "SHP-00004", "status": "Delivered", "mode": "Air", "carrier": "Mile High Air",
+      "lateRisk": null, "remainingKm": 0, "estimatedArrival": null, "promisedDelivery": "2026-03-01T12:00:00.000Z",
+      "originId": "001000000000001AAA", "originName": "Denver DC", "destinationId": "001000000000003AAA", "destinationName": "Dallas Yard",
+      "latitude": 32.7767, "longitude": -96.797
+    }
+  ]
+}

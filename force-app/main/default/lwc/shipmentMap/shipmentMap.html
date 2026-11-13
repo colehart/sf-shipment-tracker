@@ -1,0 +1,116 @@
+<template>
+  <lightning-card title={cardTitle} icon-name="custom:custom98">
+    <div slot="actions" class="slds-grid slds-grid_vertical-align-center">
+      <span class={liveBadgeClass} title="Updates arrive through Change Data Capture"
+        >{liveLabel}</span
+      >
+      <lightning-button-icon
+        class="refresh-button slds-m-left_x-small"
+        icon-name="utility:refresh"
+        alternative-text="Refresh shipments"
+        title="Refresh shipments"
+        onclick={handleRefresh}
+      ></lightning-button-icon>
+    </div>
+
+    <template lwc:if={error}>
+      <div
+        class="slds-m-horizontal_medium slds-m-bottom_small slds-notify slds-notify_alert slds-alert_error"
+        role="alert"
+      >
+        {error}
+      </div>
+    </template>
+
+    <div class="layout">
+      <div class="map-pane" style={mapStyle}>
+        <template lwc:if={isLoading}>
+          <lightning-spinner alternative-text="Loading shipments" size="medium"></lightning-spinner>
+        </template>
+        <template lwc:if={useFallback}>
+          <lightning-map
+            map-markers={fallbackMapMarkers}
+            zoom-level="4"
+            list-view="hidden"
+            onmarkerselect={handleFallbackSelect}
+          ></lightning-map>
+          <p class="fallback-note slds-text-body_small slds-text-color_weak">
+            Showing the standard map because the vector map could not start: {fallbackReason}
+          </p>
+        </template>
+        <template lwc:else>
+          <div
+            class="map-canvas"
+            lwc:dom="manual"
+            aria-label="Map of shipments and sites"
+            role="region"
+          ></div>
+        </template>
+      </div>
+
+      <div class="side-pane" style={mapStyle}>
+        <div class="risk-chips" role="group" aria-label="Filter by late risk">
+          <template for:each={riskChips} for:item="chip">
+            <button
+              key={chip.risk}
+              class={chip.className}
+              data-risk={chip.risk}
+              aria-pressed={chip.pressed}
+              onclick={handleRiskFilter}
+            >
+              <span class="dot" style={chip.dotStyle}></span>{chip.label}
+            </button>
+          </template>
+        </div>
+
+        <template lwc:if={showEmptyState}>
+          <div class="slds-p-around_medium slds-text-color_weak">
+            No shipments yet. Run <code>scripts/apex/seed-demo-data.apex</code> to load demo
+            freight.
+          </div>
+        </template>
+
+        <ul class="shipment-list" role="listbox" aria-label="Shipments, most urgent first">
+          <template for:each={rows} for:item="row">
+            <li
+              key={row.id}
+              class={row.className}
+              data-id={row.id}
+              role="option"
+              tabindex="0"
+              aria-selected={row.ariaSelected}
+              onclick={handleRowClick}
+              onkeydown={handleRowKeydown}
+            >
+              <div class="row-top">
+                <span class="dot" style={row.dotStyle}></span>
+                <span class="row-name">{row.name}</span>
+                <span class="row-risk">{row.risk}</span>
+                <lightning-button-icon
+                  icon-name="utility:new_window"
+                  variant="bare"
+                  size="small"
+                  data-id={row.id}
+                  alternative-text={row.openLabel}
+                  title={row.openLabel}
+                  onclick={handleOpenRecord}
+                ></lightning-button-icon>
+              </div>
+              <div class="row-lane">{row.lane}</div>
+              <div class="row-meta slds-text-color_weak">
+                {row.etaLabel}<template lwc:if={row.slackLabel}> · {row.slackLabel}</template>
+              </div>
+              <div class="row-meta slds-text-color_weak">{row.meta}</div>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </div>
+
+    <div slot="footer" class="legend slds-text-body_small">
+      <span><span class="legend-site"></span>Site (Account)</span>
+      <span><span class="legend-line legend-line_solid"></span>Travelled</span>
+      <span><span class="legend-line legend-line_dashed"></span>Remaining</span>
+    </div>
+  </lightning-card>
+</template>

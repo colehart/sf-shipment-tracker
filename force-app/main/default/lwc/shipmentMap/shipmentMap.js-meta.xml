@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Shipment Map</masterLabel>
+    <description>MapLibre map of shipments and sites, colored by late risk, with live updates.</description>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage,lightning__HomePage">
+            <property name="cardTitle" type="String" label="Card title" default="Shipment Tracker"/>
+            <property name="mapHeight" type="Integer" label="Map height (px)" default="560" min="300" max="1200"/>
+        </targetConfig>
+        <targetConfig targets="lightning__RecordPage">
+            <objects>
+                <object>Account</object>
+            </objects>
+            <property name="cardTitle" type="String" label="Card title" default="Shipments for this account"/>
+            <property name="mapHeight" type="Integer" label="Map height (px)" default="420" min="300" max="1200"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

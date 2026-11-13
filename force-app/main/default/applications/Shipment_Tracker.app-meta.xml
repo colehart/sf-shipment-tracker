@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <brand>
+        <headerColor>#032D60</headerColor>
+        <shouldOverrideOrgTheme>false</shouldOverrideOrgTheme>
+    </brand>
+    <description>Track freight between Accounts on a live map, triaged by late risk.</description>
+    <formFactors>Large</formFactors>
+    <isNavAutomaticRefreshDisabled>false</isNavAutomaticRefreshDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <label>Shipment Tracker</label>
+    <navType>Standard</navType>
+    <tabs>Shipment_Map</tabs>
+    <tabs>Shipment__c</tabs>
+    <tabs>standard-Account</tabs>
+    <tabs>standard-report</tabs>
+    <uiType>Lightning</uiType>
+</CustomApplication>
